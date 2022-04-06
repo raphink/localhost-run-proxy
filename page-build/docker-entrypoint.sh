@@ -6,7 +6,7 @@ while [ 1 ]; do
 	cat <<EOF > /var/proxy/index.html
 <html>
 <body>
-<iframe src="$URL" style="width:100vw;height:100vh;"></iframe>
+<iframe src="$URL" style="width:100vw;height:100vh;border:none;"></iframe>
 </body>
 </html>
 EOF
