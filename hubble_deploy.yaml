@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -44,3 +45,21 @@ spec:
       volumes:
       - name: proxy-data
         emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: localhost-run-proxy
+  name: localhost-run-proxy
+  namespace: kube-system
+spec:
+  ports:
+  # Fixing the nodePort
+  - nodePort: 32042
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: localhost-run-proxy
+  type: NodePort
