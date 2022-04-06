@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: localhost-run-proxy
+  name: localhost-run-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: localhost-run-proxy
+  template:
+    metadata:
+      labels:
+        app: localhost-run-proxy
+    spec:
+      containers:
+      # SSH connection to localhost.run
+      - name: ssh
+        image: quay.io/raphael_pinson/localhost-run-proxy:ssh
+        volumeMounts:
+        - mountPath: /var/proxy
+          name: proxy-data
+        env:
+        - name: "LOCAL_HOST"
+          value: "hubble-ui.kube-system"
+        - name: "LOCAL_PORT"
+          value: "80"
+      # index.html generation
+      - name: page-build
+        image: quay.io/raphael_pinson/localhost-run-proxy:page-build
+        volumeMounts:
+        - mountPath: /var/proxy
+          name: proxy-data
+      # web server
+      - name: httpd
+        image: nginx
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html
+          name: proxy-data
+        ports:
+        - name: http
+          containerPort: 80
+      volumes:
+      - name: proxy-data
+        emptyDir: {}

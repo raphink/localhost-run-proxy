@@ -1,0 +1,22 @@
+version: '3'
+services:
+  ssh:
+    image: quay.io/raphael_pinson/localhost-run-proxy:ssh
+    build: ssh
+    volumes:
+      - proxy:/var/proxy
+    environment:
+      LOCAL_HOST: "192.168.0.227"
+  page-build:
+    image: quay.io/raphael_pinson/localhost-run-proxy:page-build
+    build: page-build
+    volumes:
+      - proxy:/var/proxy
+  httpd:
+    image: nginx
+    volumes:
+      - proxy:/usr/share/nginx/html
+    ports:
+      - 8080:80
+volumes:
+  proxy: {}
