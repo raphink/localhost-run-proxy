@@ -6,7 +6,7 @@ while [ 1 ]; do
 	cat <<EOF > /var/proxy/index.html
 <html>
 <body>
-Redirecting to <a href="$URL" target="_blank">Hubble UI</a>.
+<iframe src="$URL" style="width:100vw;height:100vh;"></iframe>
 </body>
 </html>
 EOF
