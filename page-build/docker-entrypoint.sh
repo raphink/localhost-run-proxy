@@ -5,7 +5,12 @@ while [ 1 ]; do
 
 	cat <<EOF > /var/proxy/index.html
 <html>
+<head>
+	<meta http-equiv="refresh" content="0; URL=$URL" />
+</head>
+
 <body>
+<!-- in case redirect fails, use iframe -->
 <iframe src="$URL" style="width:100vw;height:100vh;border:none;"></iframe>
 </body>
 </html>
